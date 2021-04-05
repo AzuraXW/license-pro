@@ -1,5 +1,8 @@
 export default {
   data: [],
-  subjectId: '',
-  modelType: ''
+  subjectId: 1,
+  modelType: 'c1',
+  headerTitle: '驾照题库',
+  userSelects: {},
+  userSelectDetails: []
 }
