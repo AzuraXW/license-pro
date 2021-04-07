@@ -18,5 +18,6 @@
   justify-content: center;
   align-items: center;
   font-size: 18px;
+  z-index: 999;
 }
 </style>

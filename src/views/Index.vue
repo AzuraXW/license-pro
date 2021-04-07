@@ -21,7 +21,7 @@ export default {
     // 开始答题，获取题目
     async function handleAnswerStart () {
       let data = localStorage.getItem('data')
-      if (!data) {
+      /* if (!data) {
         const res = await ctx.$http.getSubject({
           subject: store.state.subjectId,
           model: store.state.modelType
@@ -30,8 +30,17 @@ export default {
           data = res.result
           localStorage.setItem('data', JSON.stringify(data))
         }
+      } */
+      const res = await ctx.$http.getSubject({
+        subject: store.state.subjectId,
+        model: store.state.modelType
+      })
+      if (res.error_code === 0) {
+        data = res.result
+        localStorage.setItem('data', JSON.stringify(data))
       }
-      store.commit('setData', JSON.parse(data))
+      // store.commit('setData', JSON.parse(data))
+      store.commit('setData', data)
       console.log(store.state.data)
       if (store.state.data.length > 0) {
         router.push({ name: 'Test' })

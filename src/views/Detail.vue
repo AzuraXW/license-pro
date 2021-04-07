@@ -1,5 +1,19 @@
 <template>
   <div class="answers-deatils">
+    <div class="orders">
+      <ul>
+        <li
+        v-for="(unwant, index) in userSelectDetails"
+        :key="unwant.id"
+        :class="{
+          'cur': position === index
+        }"
+        @click="switchDetail(index)"
+        >
+          {{index+1}}
+        </li>
+      </ul>
+    </div>
     <p class="question">{{ curQusInfo.question }}</p>
     <van-image
       v-if="curQusInfo.url"
@@ -19,9 +33,10 @@
       </answer-btn>
     </div>
     <div class="explain">
-      <p v-if="!curQusInfo.accuracy">
-        解析：
-        {{ curQusInfo.explains }}
+      <p v-if="!curQusInfo.accuracy" v-html="'解析：' + curQusInfo.explains">
+      </p>
+      <p v-else>
+        恭喜你答对了！
       </p>
     </div>
     <van-button type="primary" block @click="switchDetail('next')">查看下一题</van-button>
@@ -31,6 +46,7 @@
 <script>
 import { setAnswerOptions } from '@/utils/answer.js'
 import answerBtn from '@/components/answerBtn'
+import { useRouter } from 'vue-router'
 import { computed, reactive, ref, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import { Toast } from 'vant'
@@ -46,6 +62,11 @@ const updateData = (data, index) => {
 export default {
   setup () {
     const store = useStore()
+    const router = useRouter()
+    if (!store.state.userSelectDetails.length) {
+      router.push({ name: 'Index' })
+    }
+
     const userSelectDetails = computed(() => (store.state.userSelectDetails))
     const position = ref(0)
     updateData(userSelectDetails.value, position.value)
@@ -71,7 +92,9 @@ export default {
 
     return {
       ...toRefs(curAnswerInfo),
-      switchDetail
+      switchDetail,
+      userSelectDetails,
+      position
     }
   },
   components: {
@@ -93,6 +116,36 @@ export default {
   .explain{
     font-size: 14px;
     line-height: 1.5;
+    img{
+      width: 80px;
+    }
+  }
+  .orders{
+    height: 30px;
+    overflow: hidden;
+    padding: 5px 0;
+    ul{
+      overflow: auto;
+      display: flex;
+      padding-bottom: 15px;
+      li{
+        flex-shrink: 0;
+        width: 30px;
+        height: 30px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        text-align: center;
+        line-height: 30px;
+        border-radius: 50%;
+        &:not(:last-child){
+          margin-right: 50px;
+        }
+        &.cur{
+          background-color: cornflowerblue;
+          color: #fff;
+        }
+      }
+    }
   }
 }
 </style>

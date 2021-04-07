@@ -42,9 +42,15 @@ export default {
   }
   &.correct::after{
     content: '\F0C8';
+    color: rgb(223, 77, 77);
+    background-color: #fff;
+    border-color: transparent;
   }
   &.error::after{
     content: '\F042';
+    color: rgb(223, 77, 77);
+    background-color: #fff;
+    border-color: transparent;
   }
   &.correct, &.error{
     color: #fff;
